@@ -4,7 +4,7 @@
 const Store = require('../db/models/Store');
 
 // Require the data
-const seedData = require('./seeds.json');
+const seedData = require('../db/seed.json');
 
 // Delete any existing documents in the Images collection
 Store.deleteMany()

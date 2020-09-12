@@ -2,8 +2,8 @@
 const express = require('express');
 // Require router
 const router = express.Router();
-// Set var to path of models (Images)
-const Image = require('../db/models/Image');
+// Set var to path of models (stores)
+const Store = require('../db/models/Store');
 const Comment = require('../db/models/Comment');
 
 // Require any middleware for error functions and { deconstruct } any functions
@@ -12,38 +12,38 @@ const Comment = require('../db/models/Comment');
 
 // Set up route
 // INDEX
-// GET api/images
+// GET api/stores
 router.get('/', (req, res) => {
-	Image.find()
+	Store.find()
 		.sort([['updatedAt', 'descending']])
-		.then((allImages) => {
-			res.json(allImages);
+		.then((allStores) => {
+			res.json(allStores);
 		});
 });
 // SHOW
-// GET api/images/`db _id string here`
+// GET api/stores/`db _id string here`
 router.get('/:name', (req, res) => {
-	const imageName = req.params.name;
-	Image.findOne({ name: imageName })
+	const storeName = req.params.name;
+	Store.findOne({ name: storeName })
 		.populate('comments')
-		.then((image) => {
-			res.json(image);
+		.then((store) => {
+			res.json(store);
 		});
 });
 
 // CREATE
-// POST api/images
+// POST api/stores
 router.post('/new', (req, res) => {
-	const newImage = req.body;
-	Image.create(newImage).then((newPicture) => {
+	const newStore = req.body;
+	Store.create(newStore).then((newPicture) => {
 		res.json(newPicture);
 	});
 });
 
 // UPDATE
-// PUT api/images/`db _id string here`
+// PUT api/stores/`db _id string here`
 router.put('/:id', (req, res) => {
-	Image.findOneAndUpdate({ _id: req.params.id }, req.body).then(
+	Store.findOneAndUpdate({ _id: req.params.id }, req.body).then(
 		(prevRecord) => {
 			res.json(prevRecord);
 		}
@@ -51,38 +51,38 @@ router.put('/:id', (req, res) => {
 });
 
 // DESTROY
-// DELETE api/images/`db _id string here`
+// DELETE api/stores/`db _id string here`
 router.delete('/:id', (req, res) => {
-	Image.findOneAndDelete({ _id: req.params.id }).then((deleted) => {
+	Store.findOneAndDelete({ _id: req.params.id }).then((deleted) => {
 		res.json(deleted);
 	});
 });
 
 //Create comment
 router.post('/:imageId/comments', (req, res, next) => {
-	Image.findById(req.params.imageId)
+	Store.findById(req.params.imageId)
 		.then((image) => {
-			image.comments.unshift(req.body);
-			return image.save();
+			store.comments.unshift(req.body);
+			return store.save();
 		})
-		.then((image) => {
-			res.json(image);
+		.then((store) => {
+			res.json(store);
 		})
 		.catch(next);
 });
 
 //Delete Comment
-router.delete('/:imageId/comments/:id', (req, res, next) => {
-	const imageId = req.params.imageId;
+router.delete('/:storeId/comments/:id', (req, res, next) => {
+	const storeId = req.params.storeId;
 	const commentId = req.params.id;
-	Image.findById(imageId)
-		.then((image) => {
-			const comment = image.comments.id(commentId);
+	Store.findById(storeId)
+		.then((store) => {
+			const comment = store.comments.id(commentId);
 			comment.remove();
-			return image.save();
+			return store.save();
 		})
-		.then((image) => {
-			res.json(image);
+		.then((store) => {
+			res.json(store);
 		})
 		.catch(next);
 });

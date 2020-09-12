@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Require the user resources routes and controllers
-const storesController = require('./store/images');
+const storesController = require('./controllers/stores');
 app.use('/api/stores', storesController);
 
 // Handle Errors Server-wide
