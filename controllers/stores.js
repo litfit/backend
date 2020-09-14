@@ -59,9 +59,9 @@ router.delete('/:id', (req, res) => {
 });
 
 //Create comment
-router.post('/:imageId/comments', (req, res, next) => {
+router.post('/:storeId/comments', (req, res, next) => {
 	Store.findById(req.params.imageId)
-		.then((image) => {
+		.then((store) => {
 			store.comments.unshift(req.body);
 			return store.save();
 		})
