@@ -4,11 +4,7 @@ const express = require('express');
 const router = express.Router();
 // Set var to path of models (stores)
 const Store = require('../db/models/Store');
-const Comment = require('../db/models/Comment');
 
-// Require any middleware for error functions and { deconstruct } any functions
-
-// Require any middleware for auth functions and { deconstruct } any functions
 
 // Set up route
 // INDEX
@@ -25,7 +21,7 @@ router.get('/', (req, res) => {
 router.get('/:name', (req, res) => {
 	const storeName = req.params.name;
 	Store.findOne({ name: storeName })
-		.populate('comments')
+		.populate('comments', 'owner','email-_id')
 		.then((store) => {
 			res.json(store);
 		});
@@ -60,7 +56,7 @@ router.delete('/:id', (req, res) => {
 
 //Create comment
 router.post('/:storeId/comments', (req, res, next) => {
-	Store.findById(req.params.imageId)
+	Store.findById(req.params.storeId)
 		.then((store) => {
 			store.comments.unshift(req.body);
 			return store.save();

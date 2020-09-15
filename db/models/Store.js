@@ -6,12 +6,10 @@ const commentSchema = require('../models/Comment');
 // set objects that will be part of the schema
 const ImageSchema = new mongoose.Schema(
 	{
-        name: String,
-        location: String,
-        image:[ ],
-        comments: [
-            commentSchema
-        ], 
+		name: String,
+		location: String,
+		image: [],
+		comments: [commentSchema],
 	},
 	{ timestamps: true }
 );
